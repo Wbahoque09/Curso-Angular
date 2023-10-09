@@ -9,7 +9,8 @@ import './style.css';
 // import '../src/topics/05-basic-destructuring';
 // import '../src/topics/06-function-destructuring';
 // import '../src/topics/07-import-export';
-import './topics/08-classes';
+// import './topics/08-classes';
+import './topics/09-generics';
 
 document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
   Hola Mundo
