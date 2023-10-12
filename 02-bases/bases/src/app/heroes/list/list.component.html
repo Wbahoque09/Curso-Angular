@@ -1,9 +1,11 @@
 <h3>Listado de Héroes</h3>
 
-<h3>Héroe borrado <small class="text-danger" > XXXX </small> </h3>
+<ng-template *ngIf="deleteHero"; else nothingWasDeleted >
+  <h3>Héroe borrado <small class="text-danger" > {{ deleteHero }} </small> </h3>
+</ng-template>
 <h3>No ha borrado nada</h3>
 
-<button class="btn btn-outline-danger">
+<button (click)="removeLastHero()" class="btn btn-outline-danger">
   Borrar último héroe
 </button>
 
@@ -12,3 +14,10 @@
 
   <!-- <li class="list-group-item"> Spiderman </li> -->
 </ul>
+
+
+
+<!--
+  Directorios *ngIf: Sirven para ocultar un elemento o mostrarlo
+  Directorios *ngFor: Se uso para recorrer los elementos de un arreglo, investigar mas sus usos
+-->
