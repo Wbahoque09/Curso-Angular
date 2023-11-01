@@ -1,9 +1,19 @@
 <h4>Listado</h4>
 <ul class="list-group">
-  <li *ngFor="let character of characterList; let i = index"
+  <li *ngFor="let character of characterList;
+    let i = index;
+    let isFirst = first;
+    let isLast = last;
+    let isEven = even;
+    let isOdd = odd;
+  "
     class="list-group-item"
+    [ngClass]="{
+      'list-group-item-dark': isFirst,
+      'list-group-item-light': isEven,
+    }"
   >
-    <span> {{ i + 1 }}. </span>
+    <span class="text-primary"> {{ i + 1 }}. </span>
     <span>{{ character.name }}</span>
     <strong> Power </strong>
     <span>{{ character.power }}</span>
@@ -11,4 +21,5 @@
 </ul>
 
 <!-- En el *ngFor se recorre el array por el nombre que este publicado dentro del ts al component que corresponde -->
-<!-- Se crea una variable para extraer el index del array -->
+<!-- Se crea una variable para extraer el index del array, se crean las demas variables para tener acceso a otras funcionalidades del *ngFor -->
+<!-- ngClass = Le dice a angular que tenga la clase de forma condicional, [] cualquier dependencia que se pase entre corcehtes lleva un igual un signo de comillas "" y un corcheteque que indica una expresion JS  -->
