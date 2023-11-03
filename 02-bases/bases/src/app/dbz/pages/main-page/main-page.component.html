@@ -4,7 +4,7 @@
 <div class="row">
   <div class="col">
 
-    <dbz-list [characterList]="characters"></dbz-list>
+    <dbz-list [characterList]="characters" (onDelete)="onDeleteCharacter($event)"></dbz-list>
 
   </div>
 
@@ -15,3 +15,8 @@
   </div>
 
 </div>
+
+
+<!--
+  Los eventos se "escuchan" y se mencionan con parentesis (), los atributos con corchetes []
+ -->

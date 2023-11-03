@@ -20,7 +20,7 @@ export class AddCharacterComponent {
     console.log(this.character);
     if (this.character.name.length === 0) return; // Validacion hecha para salir de la funcion
 
-    this.onNewCharacter.emit(this.character); // Aqui llamamos a la funcion de Emitter para emitir hacia algun lado (?)
+    this.onNewCharacter.emit({...this.character}); // Aqui llamamos a la funcion de Emitter para emitir hacia algun lado (?)
 
     this.character.name = '';
     this.character.power = 0;
