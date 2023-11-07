@@ -23,7 +23,7 @@ export class DbzService {
     },
   ];
 
-  onNewCharacter(character: Character): void {
+  addCharacter(character: Character): void {
     // Funcion creada para agregar un nuevo elemento al arreglo, se le pasa tipado el parametro
 
     const newCharacter: Character = { id: uuid(), ...character }; // Se aplica un spread operator para agregar el id y no se pierda lo demas
