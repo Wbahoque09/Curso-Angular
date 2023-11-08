@@ -4,4 +4,15 @@
   type="text"
   class="form-control"
   placeholder="Buscar gifs..."
->
+  (keyup.enter)="searchTag()"
+  #txtTagInput
+/>
+
+
+
+
+
+<!--
+  Referencia del input en este template #CualquierNombre
+  (keyup.enter)="searchTag(txtTagInput.value)" // Forma de escuchar el input sin el decorador viewchild
+-->
