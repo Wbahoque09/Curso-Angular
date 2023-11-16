@@ -4,7 +4,11 @@
   <hr class="text-white">
 
   <div class="list-group list-reset">
-    <button *ngFor="let tag of dataTags" class="list-group-item list-group-item-action">
+    <button
+      *ngFor="let tag of dataTags"
+      (click)="repeatRequest(tag)"
+      class="list-group-item list-group-item-action"
+    >
       {{ tag | titlecase }}
     </button>
   </div>
