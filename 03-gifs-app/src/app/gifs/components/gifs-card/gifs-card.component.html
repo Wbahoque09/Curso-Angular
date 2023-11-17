@@ -1,13 +1,14 @@
 <div class="card mb-2 text-center bg-dark">
-  <img
+  <lazy-image></lazy-image>
+  <!-- <img
     [src]="gif.images.downsized_medium.url"
     [alt]="gif.title"
     class="card-img-top"
-  />
+  /> -->
 
-  <div class="card-body text-white">
+  <div class="card-body text-white text-center">
     <p class="card-text">
-      {{ gif.title }}
+      {{ gif.title || 'No title' }}
     </p>
   </div>
 </div>
