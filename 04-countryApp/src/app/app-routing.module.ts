@@ -18,6 +18,10 @@ const routes: Routes = [
     component: ContactPageComponent,
   },
   {
+    path: 'countries',
+    loadChildren: () => import('./countries/countries.module').then( m => m.CountriesModule ) // Con esto no es necesario declarar el module en el module principal
+  },
+  {
     path: '**',
     redirectTo: 'home',
   },
