@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 import { Country } from '../interfaces/country';
 
 @Injectable({ providedIn: 'root' })
@@ -11,6 +11,13 @@ export class CountriesService {
 
   searchCapital(term: string): Observable<Country[]> { // El observable es para tipado de peticiones (?)
     const url = `${this.apiUrl}/capital/${term}`;
-    return this.http.get<Country[]>( url );
+    return this.http.get<Country[]>( url )
+    .pipe( // El pipe es otro observable y con el tenemos acceso a varios metodos
+      catchError( err => {
+        console.log(err);
+
+        return of([])
+      }) // El catchError atrapa un error en la peticion
+    )
   }
 }
