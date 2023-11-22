@@ -7,6 +7,9 @@ import { CountryPageComponent } from './pages/country-page/country-page.componen
 import { CountriesRoutingModule } from './countries-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { CountryTableComponent } from './components/country-table/country-table.component';
+import { CountryNtableComponent } from './components/country-ntable/country-ntable.component';
+import { RegionTableComponent } from './components/region-table/region-table.component';
+
 
 
 
@@ -17,6 +20,8 @@ import { CountryTableComponent } from './components/country-table/country-table.
     ByRegionPageComponent,
     CountryPageComponent,
     CountryTableComponent,
+    CountryNtableComponent,
+    RegionTableComponent,
   ],
   imports: [
     CommonModule,
