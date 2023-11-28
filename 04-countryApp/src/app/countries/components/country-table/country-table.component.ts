@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { Country } from '../../interfaces/country';
 import { Capital } from '../../interfaces/capital';
 
 @Component({
