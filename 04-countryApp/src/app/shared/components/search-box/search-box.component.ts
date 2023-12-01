@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'shared-search-box',
@@ -6,7 +7,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styles: [
   ]
 })
-export class SearchBoxComponent {
+export class SearchBoxComponent implements OnInit {
+
+  private debouncer: Subject<string> = new Subject<string>(); // El Subject es un observable que ya contiene los pipes y suscribe (?)
 
   @Input()
   public placeholder: string = '';
@@ -14,8 +17,18 @@ export class SearchBoxComponent {
   @Output() // Metodo para emitir eventos de un padre hacia el hijo (?)
    public onListenChild = new EventEmitter<string>(); // Con esto emito eventos desde el padre hacia el hijo (?)
 
+   ngOnInit(): void {
+    this.debouncer.subscribe( value => { // El debouncer aqui se encarga de hacer las emiciones
+      console.log('debouncer value', value);
+    })
+   }
+
   emitValue( value: string ): void {
     this.onListenChild.emit( value );
+  }
+
+  onKeyPress( searchTerm: string ) {
+    this.debouncer.next( searchTerm );
   }
 
 }
