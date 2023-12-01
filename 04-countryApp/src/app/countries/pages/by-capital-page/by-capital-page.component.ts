@@ -12,13 +12,16 @@ import { Capital } from '../../interfaces/capital';
 export class ByCapitalPageComponent {
 
   public countries: Capital[] = [];
+  public isLoading: boolean = false; // Se crea para mostrar el spinner del loading
 
   constructor( private countriesService: CountriesService ) {}
 
   searchByCapital( term:string ): void {
+    this.isLoading = true;
     this.countriesService.searchCapital( term )
     .subscribe( countries => { // El suscribe sirve para detectar peticiones
       this.countries = countries; // Aqui se llena el array con los resultados de la peticion
+      this.isLoading = false;
     })
   }
 
