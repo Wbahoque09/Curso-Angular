@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { CountriesService } from '../../services/countries.service';
 import { Capital } from '../../interfaces/capital';
 
+type Region = 'Africa'|'Americas'|'Asia'|'Europe'|'Oceania'; // type creado para solo "mapear" busquedas por continentes
+
 @Component({
   selector: 'countries-by-region-page',
   templateUrl: './by-region-page.component.html',
@@ -9,11 +11,18 @@ import { Capital } from '../../interfaces/capital';
 })
 export class ByRegionPageComponent {
   public regiones: Capital[] = [];
+  public regions: Region[] = [
+    'Africa' , 'Americas' , 'Asia' , 'Europe' , 'Oceania',
+  ];
+  public selectedRegion?: Region;
 
   constructor(private countriesService: CountriesService) {}
 
-  searchByRegion(term: string): void {
-    this.countriesService.searchRegion(term).subscribe((regions) => {
+  searchByRegion(region: Region): void {
+
+    this.selectedRegion = region;
+
+    this.countriesService.searchRegion(region).subscribe((regions) => {
       this.regiones = regions;
     });
   }
