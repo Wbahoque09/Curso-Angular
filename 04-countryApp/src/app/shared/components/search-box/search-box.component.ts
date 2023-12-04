@@ -13,6 +13,9 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
   @Input()
   public placeholder: string = '';
 
+  @Input()
+  public initialValue: string = ''; // Se define esta property para almacenar las busquedas.
+
   @Output() // Metodo para emitir eventos de un padre hacia el hijo (?)
   public onListenChild = new EventEmitter<string>(); // Con esto emito eventos desde el padre hacia el hijo (?)
 
@@ -32,7 +35,8 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void { // Se encarga de destruir components y se ponde debajo del onInit (?)
+  ngOnDestroy(): void {
+    // Se encarga de destruir components y se ponde debajo del onInit (?)
     this.debouncerSuscription?.unsubscribe();
   }
 

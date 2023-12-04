@@ -7,6 +7,7 @@
     <!-- (onListenChild)="searchByCapital($event)" -->
     <shared-search-box
       (onDebounce)="searchByCapital($event)"
+      [initialValue]="initialValue"
       placeholder="Buscar Por Capital"
     >
     </shared-search-box>

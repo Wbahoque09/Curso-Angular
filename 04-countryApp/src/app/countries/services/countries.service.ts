@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, delay, map, of } from 'rxjs';
+import { Observable, catchError, map, of, tap } from 'rxjs';
 import { Capital } from '../interfaces/capital';
 import { CacheStore } from '../interfaces/cache-store.interface';
 
@@ -9,7 +9,7 @@ import { CacheStore } from '../interfaces/cache-store.interface';
 export class CountriesService {
   private apiUrl: string = 'https://restcountries.com/v3.1';
 
-  public cacheStore: CacheStore = {
+  public cacheStore: CacheStore = { // Este cacheStore se crea para malmacenar la data
     byCapital: { term: '', countries: [] },
     byCountries: { term: '', countries: [] },
     byRegion: { region: '', countries: [] },
@@ -36,12 +36,18 @@ export class CountriesService {
         // return of([]);
      // })  El catchError atrapa un error en la peticion
     // );
-    return this.getCountriesRequest(url);
+    return this.getCountriesRequest(url)
+      .pipe(
+        tap( countries => this.cacheStore.byCapital = { term, countries }) // Aqui guardamos en un array los paises y la busqueda que se consulto, se tipa con las interfaces correspondientes
+      );
   }
 
   searchCountry(term: string): Observable<Capital[]> {
     const url = `${this.apiUrl}/name/${term}`;
-    return this.getCountriesRequest(url);
+    return this.getCountriesRequest(url)
+    .pipe(
+      tap( countries => this.cacheStore.byCountries = { term, countries })
+    )
   }
 
   searchRegion(term: string): Observable<Capital[]> {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CountriesService } from '../../services/countries.service';
 import { Capital } from '../../interfaces/capital';
 
@@ -9,12 +9,17 @@ import { Capital } from '../../interfaces/capital';
   styles: [
   ]
 })
-export class ByCapitalPageComponent {
+export class ByCapitalPageComponent implements OnInit {
 
   public countries: Capital[] = [];
   public isLoading: boolean = false; // Se crea para mostrar el spinner del loading
+  public initialValue: string = ''; // Se crea para guardar el valor de busqueda
 
   constructor( private countriesService: CountriesService ) {}
+  ngOnInit(): void {
+    this.countries = this.countriesService.cacheStore.byCapital.countries; // Aqui accedemos al arreglo de countries que queda guardado en el tap de searchCapital
+    this.initialValue = this.countriesService.cacheStore.byCapital.term;
+  }
 
   searchByCapital( term:string ): void {
     this.isLoading = true;
