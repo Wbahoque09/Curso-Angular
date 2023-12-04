@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { CountriesService } from '../../services/countries.service';
 import { Capital } from '../../interfaces/capital';
+import { Region } from '../../interfaces/region-type';
 
-type Region = 'Africa'|'Americas'|'Asia'|'Europe'|'Oceania'; // type creado para solo "mapear" busquedas por continentes
+
 
 @Component({
   selector: 'countries-by-region-page',
