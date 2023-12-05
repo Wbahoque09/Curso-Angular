@@ -11,7 +11,7 @@ import { Region } from '../../interfaces/region-type';
   styles: [],
 })
 export class ByRegionPageComponent implements OnInit {
-  public regiones: Capital[] = [];
+  public regiones: Capital[] = []; // Aqui guardamos los resulatdos de la peticion en un array
   public regions: Region[] = [
     'Africa',
     'Americas',
@@ -21,19 +21,21 @@ export class ByRegionPageComponent implements OnInit {
   ];
   public selectedRegion?: Region;
   public isLoading: boolean = false; // Se crea para mostrar el spinner del loading
-  public initialValue: string = ''; // Se crea para guardar el valor de busqueda
+
 
   constructor(private countriesService: CountriesService) {}
-  ngOnInit(): void {
+  ngOnInit(): void { // El ngOnInit se costruye con el componente
     this.selectedRegion = this.countriesService.cacheStore.byRegion.region; // Aqui accedemos al arreglo de countries que queda guardado en el tap de searchCapital
-    // this.initialValue = this.countriesService.cacheStore.byRegion.countries;
+    this.regiones = this.countriesService.cacheStore.byRegion.countries; // Se llena la region con la busqueda
   }
 
   searchByRegion(region: Region): void {
+    this.isLoading = true;
     this.selectedRegion = region;
 
     this.countriesService.searchRegion(region).subscribe((regions) => {
       this.regiones = regions;
+      this.isLoading = false;
     });
   }
 }
