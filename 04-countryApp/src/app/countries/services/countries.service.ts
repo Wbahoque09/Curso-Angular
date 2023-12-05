@@ -16,7 +16,19 @@ export class CountriesService {
     byRegion: { region: '', countries: [] },
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    this.loadFromLocalStorage(); // Aqui se carga la funcion del llamado del localStorage, esto carga apenas se inicia el componente
+  }
+
+  private saveToLocalStorage() { // Metodo para guardar las peticiones en los observables
+    localStorage.setItem('cacheStore', JSON.stringify( this.cacheStore ));
+  }
+
+  private loadFromLocalStorage() { // Metodo para mostrar las peticiones en los observables
+    if (!localStorage.getItem('cacheStore')) return;
+
+    this.cacheStore = JSON.parse(localStorage.getItem('cacheStore')!);
+  }
 
   private getCountriesRequest( url: string ): Observable<Capital[]> { // Se crea esta funcion para la peticion
     return this.http.get<Capital[]>(url)
@@ -39,16 +51,17 @@ export class CountriesService {
     // );
     return this.getCountriesRequest(url)
       .pipe(
-        tap( countries => this.cacheStore.byCapital = { term, countries }) // Aqui guardamos en un array los paises y la busqueda que se consulto, se tipa con las interfaces correspondientes
+        tap( countries => this.cacheStore.byCapital = { term, countries }), // Aqui guardamos en un array los paises y la busqueda que se consulto, se tipa con las interfaces correspondientes
+        tap( () => this.saveToLocalStorage() ), // En este punto de la app este tap se hace para guardar lo que haya en localStorage
       );
   }
 
   searchCountry(term: string): Observable<Capital[]> {
     const url = `${this.apiUrl}/name/${term}`;
-    return this.getCountriesRequest(url)
-    .pipe(
-      tap( countries => this.cacheStore.byCountries = { term, countries })
-    )
+    return this.getCountriesRequest(url).pipe(
+      tap((countries) => (this.cacheStore.byCountries = { term, countries })),
+      tap(() => this.saveToLocalStorage()) // En este punto de la app este tap se hace para guardar lo que haya en localStorage
+    );
   }
 
   searchRegion(region: Region): Observable<Capital[]> {
@@ -58,10 +71,10 @@ export class CountriesService {
     //     return of([]);
     //   })
     // );
-    return this.getCountriesRequest(url)
-    .pipe(
-      tap( countries => this.cacheStore.byRegion = { region, countries })
-    )
+    return this.getCountriesRequest(url).pipe(
+      tap((countries) => (this.cacheStore.byRegion = { region, countries })),
+      tap(() => this.saveToLocalStorage()) // En este punto de la app este tap se hace para guardar lo que haya en localStorage
+    );
   }
 
   searchCountryAlphaCode(code: string): Observable<Capital | null> {
