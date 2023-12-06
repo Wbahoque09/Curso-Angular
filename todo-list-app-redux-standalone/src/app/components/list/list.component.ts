@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TaskComponent } from '../task/task.component';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-list',
@@ -10,5 +11,5 @@ import { TaskComponent } from '../task/task.component';
   styleUrls: ['./list.component.scss']
 })
 export class ListComponent {
-
+  store = inject(Store);
 }
