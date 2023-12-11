@@ -4,11 +4,6 @@
   ],
   "hints": {
     "axe/forms": "off",
-    "axe/structure": [
-      "default",
-      {
-        "listitem": "off"
-      }
-    ]
+    "axe/structure": "off"
   }
 }

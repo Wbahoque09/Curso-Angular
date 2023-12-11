@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { task } from 'src/app/store/task.store';
 
 @Component({
   selector: 'app-task',
@@ -9,5 +10,6 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./task.component.scss']
 })
 export class TaskComponent {
-
+  @Input()
+  task!: task;
 }
