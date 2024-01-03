@@ -11,5 +11,5 @@ import { task } from 'src/app/store/task.store';
 })
 export class TaskComponent {
   @Input()
-  task!: task;
+  task!: task; // Se crea para pasar la task
 }

@@ -17,6 +17,10 @@ const initialState: task[] = [
 ]
 
 export const addTask = createAction('[TASK] addTask', props<{ title: string }>()) // Accion creada para añadir tareas (?)
+export const markTaskAsCompleted = createAction(
+  '[TASK] markTaskAsCompleted',
+  props<{ id: string }>()
+); // Accion creada para marcar tareas como completadas (?)
 
 export const taskReducer = createReducer(
   initialState,
@@ -25,10 +29,11 @@ export const taskReducer = createReducer(
 
 const selectTaskFeature = createFeatureSelector<task[]>('tasks'); // Se crea un selector para hacer referencia a algo (?)
 
-export const selectTask = createSelector(
+export const selectTask = createSelector( // variable creada para la seleccion de las task (Entiendo que es tener una o mas task seleccionada (?))
   selectTaskFeature,
   (state: task[]) => state
 )
 
 
 // Aca estan los reducers (?), y antes de estos se van a crear las acciones
+// on = Es para registrar acciones neuvas en el reducer (Asi funciona en este caso).

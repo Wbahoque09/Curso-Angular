@@ -15,10 +15,13 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 })
 export class ListComponent {
   store = inject(Store); // Inyeccion de dependencias, como en el constructor
-  tasks = this.store.selectSignal(selectTask);
+  tasks = this.store.selectSignal(selectTask); // Aqui almacenamos la informacion de las task seleccionadas (?)
   formCtrl = new FormControl('', [Validators.required, Validators.minLength(5)])
 
   addTask(): void{
     this.store.dispatch(addTask({ title: this.formCtrl.value ?? '' }))
+    this.formCtrl.setValue(null) // Para resetear el input html(?)
   }
 }
+
+// El dispatch nos permite llamar acciones
