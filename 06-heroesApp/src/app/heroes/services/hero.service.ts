@@ -6,7 +6,7 @@ import { Hero } from '../interfaces/hero.interface';
 import { environments } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
-export class ServiceNameService {
+export class HeroesService {
 
   private baseUrl: string = environments.baseUrl; // Se importa del archivo environments la constante de la baseUrl para la peticion y se declara en una variable privada
 
