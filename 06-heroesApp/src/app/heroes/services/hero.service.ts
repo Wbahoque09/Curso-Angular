@@ -25,4 +25,9 @@ export class HeroesService {
     );
   }
 
+  getSuggestions( term: string ): Observable<Hero[]> {
+    // Funcion creada para la busqueda de un heroe
+    return this.http.get<Hero[]>(`${this.baseUrl}/heroes?q=${term}&_limit=5`); // Aqui se hace la peticion para hacer la busqueda
+  }
+
 }
