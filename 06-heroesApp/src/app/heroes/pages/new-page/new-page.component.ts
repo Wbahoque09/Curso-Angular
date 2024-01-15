@@ -8,4 +8,9 @@ import { Component } from '@angular/core';
 })
 export class NewPageComponent {
 
+  public publishers = [ // arreglo para mapear las opciones del select
+    { id: 'DC Comics', desc: 'DC - Comics' },
+    { id: 'Marvel Comics', desc: 'Marvel - Comics' },
+  ]
+
 }
