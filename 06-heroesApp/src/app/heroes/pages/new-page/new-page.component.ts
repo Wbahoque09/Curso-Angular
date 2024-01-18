@@ -1,16 +1,40 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Hero, Publisher } from '../../interfaces/hero.interface';
 import { HeroesService } from '../../services/hero.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-new-page',
   templateUrl: './new-page.component.html',
   styles: [],
 })
-export class NewPageComponent {
+export class NewPageComponent implements OnInit {
 
-  constructor( private heroesService: HeroesService ) {}
+  constructor(
+    private heroesService: HeroesService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+  )
+     {}
+  ngOnInit(): void {
+
+    if ( !this.router.url.includes('edit') ) return; // Aqui configuramos el formulario a crear heroes
+
+    this.activatedRoute.params
+      .pipe(
+        switchMap( ({ id }) => this.heroesService.getHeroById( id ) ),
+      ).subscribe( hero => {
+
+        if ( !hero ) return this.router.navigateByUrl('/'); // Aqui redireccionamos al list (practicamente) si el id no existe
+
+        this.heroForm.reset( hero );
+        return;
+
+      })
+
+  }
 
   // iMPORTANTE: El FormGroup, se importa en este caso en el module de la carpeta, luego se importa en el archivo a utilizar
   public heroForm = new FormGroup({
