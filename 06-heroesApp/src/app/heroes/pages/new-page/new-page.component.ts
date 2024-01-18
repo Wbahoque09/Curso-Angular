@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Publisher } from '../../interfaces/hero.interface';
+import { Hero, Publisher } from '../../interfaces/hero.interface';
+import { HeroesService } from '../../services/hero.service';
 
 @Component({
   selector: 'app-new-page',
@@ -8,6 +9,9 @@ import { Publisher } from '../../interfaces/hero.interface';
   styles: [],
 })
 export class NewPageComponent {
+
+  constructor( private heroesService: HeroesService ) {}
+
   // iMPORTANTE: El FormGroup, se importa en este caso en el module de la carpeta, luego se importa en el archivo a utilizar
   public heroForm = new FormGroup({
     // Se le pasa un objeto con todos los campos del formulario para el control reactivo del mismo
@@ -16,7 +20,7 @@ export class NewPageComponent {
     publisher: new FormControl<Publisher>( Publisher.DCComics ),
     alter_ego: new FormControl<string>(''),
     first_appearance: new FormControl<string>(''),
-    characters: new FormControl<string[]>(['']),
+    characters: new FormControl<string>(''),
     alt_img: new FormControl(''),
   });
 
@@ -26,12 +30,33 @@ export class NewPageComponent {
     { id: 'Marvel Comics', desc: 'Marvel - Comics' },
   ];
 
+  get currentHero(): Hero { // Funcion para convertir el objeto del formulario como un Hero
+    const hero = this.heroForm.value as Hero;
+    return hero;
+  }
+
   onSubmit():void { // Funcion para enviar datos del formulario (?)
 
-    console.log({
-      formIsValid: this.heroForm.valid,
-      value: this.heroForm.value,
-    });
+    if ( this.heroForm.invalid ) return;
+
+    if ( this.currentHero.id ) {
+
+      this.heroesService.updateHero( this.currentHero )
+        .subscribe( hero => {
+          // TODO: Mostrar modal con mensaje de actualizacion exitoso
+        }) // El subscribe es para disparar la peticion (?)
+        return;
+    }
+
+    this.heroesService.addHero( this.currentHero )
+      .subscribe( hero => {
+        // TODO: Mostrar modal con mensaje de inserccion exitoso y navegar a /heroes/edit/hero.id
+      })
+
+    // console.log({
+    //   formIsValid: this.heroForm.valid,
+    //   value: this.heroForm.value,
+    // });
 
   }
 
