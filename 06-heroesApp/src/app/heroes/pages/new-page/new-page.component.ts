@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Publisher } from '../../interfaces/hero.interface';
 
 @Component({
@@ -8,8 +8,8 @@ import { Publisher } from '../../interfaces/hero.interface';
   styles: [],
 })
 export class NewPageComponent {
-  // iMPORTANTE: El FormControl, se importa en este caso en el module de la carpeta, luego se importa en el archivo a utilizar
-  public heroForm = new FormControl({
+  // iMPORTANTE: El FormGroup, se importa en este caso en el module de la carpeta, luego se importa en el archivo a utilizar
+  public heroForm = new FormGroup({
     // Se le pasa un objeto con todos los campos del formulario para el control reactivo del mismo
     id: new FormControl<string>(''),
     superhero: new FormControl<string>('', { nonNullable: true }), // El nonNullable true es para decirle al formulario que nunca va a llegar nulo
@@ -25,4 +25,14 @@ export class NewPageComponent {
     { id: 'DC Comics', desc: 'DC - Comics' },
     { id: 'Marvel Comics', desc: 'Marvel - Comics' },
   ];
+
+  onSubmit():void { // Funcion para enviar datos del formulario (?)
+
+    console.log({
+      formIsValid: this.heroForm.valid,
+      value: this.heroForm.value,
+    });
+
+  }
+
 }
