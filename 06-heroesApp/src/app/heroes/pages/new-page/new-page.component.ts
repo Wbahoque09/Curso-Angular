@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
 import { Hero, Publisher } from '../../interfaces/hero.interface';
 import { HeroesService } from '../../services/hero.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from 'rxjs';
 
 @Component({
@@ -16,6 +18,7 @@ export class NewPageComponent implements OnInit {
     private heroesService: HeroesService,
     private activatedRoute: ActivatedRoute,
     private router: Router,
+    private snackbar: MatSnackBar, // Aqui utilizamos la clase especifica del MatSnackbar
   )
      {}
   ngOnInit(): void {
@@ -67,7 +70,7 @@ export class NewPageComponent implements OnInit {
 
       this.heroesService.updateHero( this.currentHero )
         .subscribe( hero => {
-          // TODO: Mostrar modal con mensaje de actualizacion exitoso
+          this.showSnackbar(`${ hero.superhero } Ha sido actualizado!`);
         }) // El subscribe es para disparar la peticion (?)
         return;
     }
@@ -75,12 +78,20 @@ export class NewPageComponent implements OnInit {
     this.heroesService.addHero( this.currentHero )
       .subscribe( hero => {
         // TODO: Mostrar modal con mensaje de inserccion exitoso y navegar a /heroes/edit/hero.id
+        this.showSnackbar(`${hero.superhero} Ha sido creado!`);
+        this.router.navigate(['/heroes/edit', hero.id]);
       })
 
     // console.log({
     //   formIsValid: this.heroForm.valid,
     //   value: this.heroForm.value,
     // });
+
+  }
+
+  showSnackbar( message: string ):void {
+
+    this.snackbar.open( message, 'done', { duration: 2500 } )
 
   }
 
