@@ -44,8 +44,8 @@ export class HeroesService {
     // Peticion para eliminar heroe con el metodo delete
     return this.http.delete(`${this.baseUrl}/heroes/${ id }`) // Se le pasa el id para encontrar el heroe a eliminar
       .pipe(
+        map( resp => true ),
         catchError( err => of(false) ),
-        map( resp => true )
       )
   }
 }

@@ -1,11 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { filter, pipe, switchMap, tap } from 'rxjs';
+
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 
 import { Hero, Publisher } from '../../interfaces/hero.interface';
 import { HeroesService } from '../../services/hero.service';
-import { switchMap } from 'rxjs';
+
+import { ConfirmDialogComponent } from '../../components/confirm-dialog/confirm-dialog.component';
 
 @Component({
   selector: 'app-new-page',
@@ -19,6 +23,7 @@ export class NewPageComponent implements OnInit {
     private activatedRoute: ActivatedRoute,
     private router: Router,
     private snackbar: MatSnackBar, // Aqui utilizamos la clase especifica del MatSnackbar
+    private dialog: MatDialog, // Se importa el dialog de angular material
   )
      {}
   ngOnInit(): void {
@@ -66,11 +71,10 @@ export class NewPageComponent implements OnInit {
 
     if ( this.heroForm.invalid ) return;
 
-    if ( this.currentHero.id ) {
-
+    if ( this.currentHero.id ) { // Aqui se verifica que el heroe exista
       this.heroesService.updateHero( this.currentHero )
         .subscribe( hero => {
-          this.showSnackbar(`${ hero.superhero } Ha sido actualizado!`);
+          this.showSnackbar(`${ hero.superhero } Ha sido actualizado!`); // Se llama el metodo de mostrar anuncio y se le pasa el mensaje
         }) // El subscribe es para disparar la peticion (?)
         return;
     }
@@ -89,9 +93,42 @@ export class NewPageComponent implements OnInit {
 
   }
 
-  showSnackbar( message: string ):void {
+  onDeleteHero():void { // Funcion creada para invocar modal antes de eliminar un heroe
+    if ( !this.currentHero.id ) throw Error('Hero id is required'); // Validacion hecha para evitar cualquier error por si no existe el heroe
 
-    this.snackbar.open( message, 'done', { duration: 2500 } )
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, { // Aqui en este caso pasamos el ConfirmDialogComponent como 1 arg. y la data en este caso pasamos el formulario
+      data: this.heroForm.value,
+    });
+
+    /* Segunda Forma optima */
+    dialogRef.afterClosed()
+      .pipe(
+        filter( (result: boolean) => result ),
+        switchMap( () => this.heroesService.deleteHeroById( this.currentHero.id ) ),
+        filter( (wasDeleted: boolean) => wasDeleted ),
+        // tap( wasDeleted => console.log({ wasDeleted }) ),
+      )
+      .subscribe(() => {
+        this.router.navigate(['/heroes']);
+      });
+
+    /* Primera Forma no optima */
+    // dialogRef.afterClosed().subscribe(result => {
+    //   if ( !result ) return;
+
+    //   this.heroesService.deleteHeroById( this.currentHero.id )
+    //     .subscribe( wasDeleted => {
+    //       if ( wasDeleted ) {
+    //         this.router.navigate(['/heroes']);
+    //       }
+    //     }) // Invocamos la funcion de deleteHero y se le pasa el id a eliminar
+    // });
+
+  }
+
+  showSnackbar( message: string ):void { // Funcion creada para mostrar anuncio(?)
+
+    this.snackbar.open( message, 'done', { duration: 2500 } ) // Aqui se muestra la notificacion, recibe el mensaje del metodo onSubmit
 
   }
 
