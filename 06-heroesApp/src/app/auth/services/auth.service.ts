@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 import { environments } from 'src/environments/environment';
 import { User } from '../interfaces/user.interface';
@@ -19,11 +19,15 @@ export class AuthService {
     return structuredClone( this.user );
   }
 
-  login( email: string, password: string ):void {
+  login( email: string, password: string ):Observable<User> { // Funcion creada para obtener datos del usuario
 
     // http.post'login',{ email, password })
 
-    this.http
+    return this.http.get<User>(`${ this.baseUrl }/users/1`)
+      .pipe(
+        tap( user => this.user = user ),
+        tap( user => localStorage.setItem('token', user.id.toString() ))
+      );
 
   }
 
