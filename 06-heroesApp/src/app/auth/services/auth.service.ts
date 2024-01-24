@@ -31,9 +31,9 @@ export class AuthService {
 
   }
 
-  chechAuthentication(): Observable<boolean> | boolean {
+  chechAuthentication(): Observable<boolean> { // Funcion para comprobar autenticacion del usuario
 
-    if ( !localStorage.getItem('token') ) return false;
+    if ( !localStorage.getItem('token') ) return of(false); // Aqui se sale de la funcion si no hay nada en el localStorage
 
     const token = localStorage.getItem('token');
 
@@ -42,13 +42,13 @@ export class AuthService {
         tap( user => this.user = user ),
         map( user => !!user ),
         catchError( err => of(false) )
-      )
+      );
 
   }
 
-  logout(): void {
-    this.user = undefined;
-    localStorage.clear();
+  logout(): void { // Funcion creada para cerrar la sesion
+    this.user = undefined; // Se deja undefined al usuario
+    localStorage.clear(); // Se limpia el localStorage
   }
 
 }
